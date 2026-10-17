@@ -1,0 +1,13 @@
+﻿apiVersion: apps.matrixdb.io/v1alpha1
+kind: MatrixDBBackup
+metadata:
+  name: backup-snapshot-sample
+  namespace: default
+spec:
+  clusterName: matrixdb-prod
+  backupType: Logical
+  storage:
+    s3Endpoint: http://minio.default.svc:9000
+    s3Bucket: matrixdb-backups
+    s3AccessKey: minioadmin
+    s3SecretKey: minioadmin

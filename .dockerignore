@@ -1,0 +1,9 @@
+# More info: https://docs.docker.com/reference/dockerfile/#dockerignore-file
+# bin
+cover.out
+.git
+.github
+.idea
+.vscode
+config/samples
+*.md

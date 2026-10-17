@@ -1,0 +1,33 @@
+apiVersion: apps.matrixdb.io/v1alpha1
+kind: MatrixDBCluster
+metadata:
+  name: matrixdb-prod
+  namespace: default
+  labels:
+    app.kubernetes.io/name: matrixdb
+    app.kubernetes.io/environment: production
+spec:
+  replicas: 3
+  image: "mysql:8.0.36"
+  serverIdOffset: 100
+  semiSyncTimeoutMs: 10000
+
+  storage:
+    size: 50Gi
+    storageClassName: local-path
+
+  resources:
+    limits:
+      cpu: "2"
+      memory: 2Gi
+    requests:
+      cpu: "500m"
+      memory: 1Gi
+
+  mysqlConfig:
+    innodb_buffer_pool_size: 512M
+    max_connections: "1000"
+    slow_query_log: "ON"
+    long_query_time: "1"
+    sync_binlog: "1"
+    innodb_flush_log_at_trx_commit: "1"

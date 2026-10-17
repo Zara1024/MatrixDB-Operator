@@ -1,0 +1,292 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 720" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="clientGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="controllerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="s3Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+    <filter id="glowBlue" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#38bdf8" flood-opacity="0.6" />
+    </filter>
+
+    <!-- Markers -->
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#4ade80" />
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#fb923c" />
+    </marker>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#c084fc" />
+    </marker>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1050" height="720" rx="16" fill="url(#bgGrad)" stroke="#334155" stroke-width="2" />
+
+  <!-- Header Title -->
+  <text x="525" y="42" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" fill="#f8fafc" letter-spacing="0.5">
+    MatrixDB-Operator v3.0.0 云原生数据库架构设计全景图
+  </text>
+  <text x="525" y="65" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#94a3b8">
+    Lossless Semi-Sync (RPO=0) • Sub-Second Failover • Continuous S3 PITR • ProxySQL Routing • Autonomous DBA Doctor
+  </text>
+
+  <!-- ==================== TOP: CLIENT WORKLOADS ==================== -->
+  <g transform="translate(225, 85)">
+    <rect width="600" height="48" rx="8" fill="url(#clientGrad)" filter="url(#shadow)" stroke="#60a5fa" stroke-width="1.5" />
+    <text x="300" y="26" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="700" fill="#ffffff">
+      业务微服务客户端集群 (Client Applications &amp; Microservices)
+    </text>
+    <text x="300" y="42" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#dbeafe">
+      OLTP 高并发写请求 / 业务读请求 / 报表分析请求
+    </text>
+  </g>
+
+  <!-- Client Traffic Arrows -->
+  <path d="M 340, 133 L 340, 172" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="4,4" marker-end="url(#arrowBlue)" />
+  <text x="348" y="155" font-family="sans-serif" font-size="10" font-weight="600" fill="#38bdf8">写流量 (Write)</text>
+
+  <path d="M 525, 133 L 525, 172" stroke="#4ade80" stroke-width="2.5" stroke-dasharray="4,4" marker-end="url(#arrowGreen)" />
+  <text x="533" y="155" font-family="sans-serif" font-size="10" font-weight="600" fill="#4ade80">读写分离 (ProxySQL)</text>
+
+  <path d="M 710, 133 L 710, 172" stroke="#c084fc" stroke-width="2.5" stroke-dasharray="4,4" marker-end="url(#arrowPurple)" />
+  <text x="718" y="155" font-family="sans-serif" font-size="10" font-weight="600" fill="#c084fc">分析流量 (OLAP)</text>
+
+  <!-- ==================== LAYER 2: INGRESS SERVICES ==================== -->
+  <!-- Service 1: Primary Service -->
+  <g transform="translate(60, 175)">
+    <rect width="270" height="64" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="8" y="8" width="6" height="48" rx="3" fill="#38bdf8" />
+    <text x="24" y="28" font-family="sans-serif" font-size="13" font-weight="700" fill="#f8fafc">&lt;cluster&gt;-primary Service</text>
+    <text x="24" y="44" font-family="sans-serif" font-size="10" fill="#94a3b8">Selector: apps.matrixdb.io/role=primary</text>
+    <text x="24" y="56" font-family="sans-serif" font-size="10" font-weight="600" fill="#38bdf8">独占写入通道 • 零切断热倒换</text>
+  </g>
+
+  <!-- Service 2: ProxySQL Gateway -->
+  <g transform="translate(390, 175)">
+    <rect width="270" height="64" rx="8" fill="#1e293b" stroke="#4ade80" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="8" y="8" width="6" height="48" rx="3" fill="#4ade80" />
+    <text x="24" y="28" font-family="sans-serif" font-size="13" font-weight="700" fill="#f8fafc">&lt;cluster&gt;-proxysql Pool</text>
+    <text x="24" y="44" font-family="sans-serif" font-size="10" fill="#94a3b8">2 副本高可用连接池网关</text>
+    <text x="24" y="56" font-family="sans-serif" font-size="10" font-weight="600" fill="#4ade80">智能 SQL 读写路由 • 线程池削峰</text>
+  </g>
+
+  <!-- Service 3: Analytics Service -->
+  <g transform="translate(720, 175)">
+    <rect width="270" height="64" rx="8" fill="#1e293b" stroke="#c084fc" stroke-width="1.5" filter="url(#shadow)" />
+    <rect x="8" y="8" width="6" height="48" rx="3" fill="#c084fc" />
+    <text x="24" y="28" font-family="sans-serif" font-size="13" font-weight="700" fill="#f8fafc">&lt;cluster&gt;-analytics Service</text>
+    <text x="24" y="44" font-family="sans-serif" font-size="10" fill="#94a3b8">Selector: matrixdb.io/role-type=analytics</text>
+    <text x="24" y="56" font-family="sans-serif" font-size="10" font-weight="600" fill="#c084fc">物理级隔离 • 大数据慢查询专用通道</text>
+  </g>
+
+  <!-- Service to Pod Arrows -->
+  <path d="M 195, 239 L 195, 278" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowBlue)" />
+  <path d="M 525, 239 L 525, 278" stroke="#4ade80" stroke-width="2" marker-end="url(#arrowGreen)" />
+  <path d="M 855, 239 L 855, 278" stroke="#c084fc" stroke-width="2" marker-end="url(#arrowPurple)" />
+
+  <!-- ==================== LAYER 3: STATEFULSET MYSQL PODS ==================== -->
+  <!-- Outer Kubernetes StatefulSet Group Box -->
+  <rect x="50" y="280" width="950" height="195" rx="10" fill="#0b1329" stroke="#1e3a8a" stroke-width="1.5" stroke-dasharray="5,5" />
+  <text x="70" y="300" font-family="sans-serif" font-size="11" font-weight="700" fill="#60a5fa" letter-spacing="0.5">
+    Kubernetes StatefulSet (跨可用区打散反亲和 TopologySpreadConstraints: MaxSkew=1)
+  </text>
+
+  <!-- Pod 0: Primary Node -->
+  <g transform="translate(70, 312)">
+    <rect width="260" height="150" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="2" filter="url(#shadow)" />
+    <!-- Role Badge -->
+    <rect x="12" y="10" width="80" height="20" rx="4" fill="#0284c7" />
+    <text x="52" y="24" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#ffffff">PRIMARY 主库</text>
+    <text x="100" y="25" font-family="sans-serif" font-size="12" font-weight="700" fill="#f8fafc">matrixdb-prod-0</text>
+    
+    <!-- Specs -->
+    <text x="14" y="48" font-family="sans-serif" font-size="11" fill="#cbd5e1">• MySQL 8.0.36 (mysqld)</text>
+    <text x="14" y="66" font-family="sans-serif" font-size="11" font-weight="600" fill="#4ade80">• super_read_only = OFF (可写)</text>
+    <text x="14" y="84" font-family="sans-serif" font-size="11" fill="#cbd5e1">• 无损半同步 Master (Quorum=N/2+1)</text>
+    <text x="14" y="102" font-family="sans-serif" font-size="11" fill="#cbd5e1">• Binlog 增量归档发射器</text>
+    
+    <!-- PVC disk box -->
+    <rect x="14" y="112" width="232" height="26" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1" />
+    <text x="130" y="129" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="600" fill="#94a3b8">
+      PersistentVolumeClaim (在线热扩容 10Gi-&gt;20Gi+)
+    </text>
+  </g>
+
+  <!-- Replication Sync Arrows between Pod 0 and Pod 1 -->
+  <g transform="translate(335, 360)">
+    <path d="M 0, 10 L 60, 10" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowBlue)" />
+    <path d="M 60, 24 L 0, 24" stroke="#4ade80" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrowGreen)" />
+    <text x="30" y="2" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#38bdf8">Binlog (AFTER_SYNC)</text>
+    <text x="30" y="38" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="600" fill="#4ade80">Relay ACK (RPO=0)</text>
+  </g>
+
+  <!-- Pod 1: Semi-Sync Replica Node -->
+  <g transform="translate(400, 312)">
+    <rect width="260" height="150" rx="8" fill="#1e293b" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)" />
+    <!-- Role Badge -->
+    <rect x="12" y="10" width="80" height="20" rx="4" fill="#15803d" />
+    <text x="52" y="24" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#ffffff">REPLICA 从库</text>
+    <text x="100" y="25" font-family="sans-serif" font-size="12" font-weight="700" fill="#f8fafc">matrixdb-prod-1</text>
+    
+    <!-- Specs -->
+    <text x="14" y="48" font-family="sans-serif" font-size="11" fill="#cbd5e1">• MySQL 8.0.36 (mysqld)</text>
+    <text x="14" y="66" font-family="sans-serif" font-size="11" font-weight="600" fill="#f87171">• super_read_only = ON (硬拦截误写)</text>
+    <text x="14" y="84" font-family="sans-serif" font-size="11" fill="#cbd5e1">• GTID Auto-Position 自动寻址追齐</text>
+    <text x="14" y="102" font-family="sans-serif" font-size="11" fill="#cbd5e1">• 亚秒级晋升候选池 (Candidate Pool)</text>
+    
+    <!-- PVC disk box -->
+    <rect x="14" y="112" width="232" height="26" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1" />
+    <text x="130" y="129" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="600" fill="#94a3b8">
+      PersistentVolumeClaim (在线热扩容 10Gi-&gt;20Gi+)
+    </text>
+  </g>
+
+  <!-- Replication Sync Arrows between Pod 1 and Pod 2 -->
+  <g transform="translate(665, 370)">
+    <path d="M 0, 10 L 55, 10" stroke="#c084fc" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrowPurple)" />
+    <text x="27" y="2" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#c084fc">Async/Semi</text>
+  </g>
+
+  <!-- Pod 2: Dedicated Analytical Replica Node -->
+  <g transform="translate(725, 312)">
+    <rect width="260" height="150" rx="8" fill="#1e293b" stroke="#c084fc" stroke-width="1.5" filter="url(#shadow)" />
+    <!-- Role Badge -->
+    <rect x="12" y="10" width="80" height="20" rx="4" fill="#7e22ce" />
+    <text x="52" y="24" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#ffffff">ANALYTICS 分析</text>
+    <text x="100" y="25" font-family="sans-serif" font-size="12" font-weight="700" fill="#f8fafc">matrixdb-prod-2</text>
+    
+    <!-- Specs -->
+    <text x="14" y="48" font-family="sans-serif" font-size="11" fill="#cbd5e1">• 专有标签: role-type=analytics</text>
+    <text x="14" y="66" font-family="sans-serif" font-size="11" font-weight="600" fill="#f87171">• super_read_only = ON</text>
+    <text x="14" y="84" font-family="sans-serif" font-size="11" fill="#cbd5e1">• 隔离慢查询与聚合计算冲击</text>
+    <text x="14" y="102" font-family="sans-serif" font-size="11" fill="#cbd5e1">• 排除在常规高可用切主选拔外</text>
+    
+    <!-- PVC disk box -->
+    <rect x="14" y="112" width="232" height="26" rx="4" fill="#0f172a" stroke="#475569" stroke-width="1" />
+    <text x="130" y="129" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="600" fill="#94a3b8">
+      PersistentVolumeClaim (数据与主库实时对齐)
+    </text>
+  </g>
+
+  <!-- Control Link Arrows between Pods and Operator -->
+  <path d="M 200, 480 L 200, 520" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="3,3" />
+  <path d="M 530, 480 L 530, 520" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="3,3" />
+  <path d="M 750, 480 L 750, 520" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="3,3" />
+
+  <!-- ==================== LAYER 4: OPERATOR CONTROL PLANE ==================== -->
+  <g transform="translate(50, 525)">
+    <rect width="670" height="170" rx="10" fill="#0f172a" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)" />
+    
+    <!-- Control Plane Title -->
+    <rect x="15" y="12" width="130" height="22" rx="4" fill="#b45309" />
+    <text x="80" y="27" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#ffffff">CONTROL PLANE</text>
+    <text x="155" y="28" font-family="sans-serif" font-size="14" font-weight="700" fill="#fbbf24">
+      MatrixDB Operator 控制器大脑 (matrixdb-operator-controller-manager)
+    </text>
+    
+    <!-- Module Grid Column 1 -->
+    <g transform="translate(20, 48)">
+      <rect width="195" height="50" rx="6" fill="#1e293b" stroke="#334155" />
+      <text x="10" y="20" font-family="sans-serif" font-size="11" font-weight="700" fill="#f8fafc">⚡ 秒级自动故障转移</text>
+      <text x="10" y="38" font-family="sans-serif" font-size="9" fill="#94a3b8">GTID 严格代数选拔 • RTO&lt;3s</text>
+    </g>
+
+    <g transform="translate(20, 106)">
+      <rect width="195" height="50" rx="6" fill="#1e293b" stroke="#334155" />
+      <text x="10" y="20" font-family="sans-serif" font-size="11" font-weight="700" fill="#f8fafc">🛡️ 越轨事务防脑裂隔离</text>
+      <text x="10" y="38" font-family="sans-serif" font-size="9" fill="#94a3b8">Errant GTID 剥离标签与选主</text>
+    </g>
+
+    <!-- Module Grid Column 2 -->
+    <g transform="translate(230, 48)">
+      <rect width="195" height="50" rx="6" fill="#1e293b" stroke="#334155" />
+      <text x="10" y="20" font-family="sans-serif" font-size="11" font-weight="700" fill="#f8fafc">🩺 DBA Doctor 锁死自愈</text>
+      <text x="10" y="38" font-family="sans-serif" font-size="9" fill="#94a3b8">秒级查杀元数据锁 (MDL) 阻塞源</text>
+    </g>
+
+    <g transform="translate(230, 106)">
+      <rect width="195" height="50" rx="6" fill="#1e293b" stroke="#334155" />
+      <text x="10" y="20" font-family="sans-serif" font-size="11" font-weight="700" fill="#f8fafc">🚫 Validating Webhook</text>
+      <text x="10" y="38" font-family="sans-serif" font-size="9" fill="#94a3b8">9443 端口硬性拦截非法 CRD 写入</text>
+    </g>
+
+    <!-- Module Grid Column 3 -->
+    <g transform="translate(440, 48)">
+      <rect width="210" height="50" rx="6" fill="#1e293b" stroke="#334155" />
+      <text x="10" y="20" font-family="sans-serif" font-size="11" font-weight="700" fill="#f8fafc">🔄 声明式 DDL (GitOps)</text>
+      <text x="10" y="38" font-family="sans-serif" font-size="9" fill="#94a3b8">CRD 声明式建表演进与耗时审计</text>
+    </g>
+
+    <g transform="translate(440, 106)">
+      <rect width="210" height="50" rx="6" fill="#1e293b" stroke="#334155" />
+      <text x="10" y="20" font-family="sans-serif" font-size="11" font-weight="700" fill="#f8fafc">🔥 SET PERSIST 零重启调参</text>
+      <text x="10" y="38" font-family="sans-serif" font-size="9" fill="#94a3b8">动态参数热加载 • PDB 法定人数防护</text>
+    </g>
+  </g>
+
+  <!-- Continuous Binlog Stream Arrow (Operator to S3) -->
+  <path d="M 720, 610 L 760, 610" stroke="#ea580c" stroke-width="2.5" marker-end="url(#arrowOrange)" />
+  <text x="740" y="598" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#fb923c">实时 Binlog 流</text>
+
+  <!-- ==================== S3 / MinIO OBJECT STORAGE ==================== -->
+  <g transform="translate(770, 525)">
+    <rect width="230" height="170" rx="10" fill="#0f172a" stroke="#ea580c" stroke-width="2" filter="url(#shadow)" />
+    
+    <!-- S3 Badge -->
+    <rect x="15" y="12" width="70" height="22" rx="4" fill="#c2410c" />
+    <text x="50" y="27" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#ffffff">S3 / MinIO</text>
+    <text x="95" y="28" font-family="sans-serif" font-size="13" font-weight="700" fill="#fdba74">云原生对象存储</text>
+
+    <!-- Capabilities -->
+    <g transform="translate(15, 45)">
+      <rect width="200" height="32" rx="4" fill="#1e293b" stroke="#431407" />
+      <text x="10" y="20" font-family="sans-serif" font-size="10" font-weight="600" fill="#fed7aa">
+        📦 全量快照备份 (Base Dump)
+      </text>
+    </g>
+
+    <g transform="translate(15, 83)">
+      <rect width="200" height="32" rx="4" fill="#1e293b" stroke="#431407" />
+      <text x="10" y="20" font-family="sans-serif" font-size="10" font-weight="600" fill="#fed7aa">
+        🌊 连续流式增量 Binlog 归档
+      </text>
+    </g>
+
+    <g transform="translate(15, 122)">
+      <rect width="200" height="34" rx="4" fill="#431407" stroke="#ea580c" stroke-width="1.2" />
+      <text x="100" y="17" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="700" fill="#ffffff">
+        ⏪ 任意时间点恢复 (PITR)
+      </text>
+      <text x="100" y="29" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#ffedd5">
+        精准重放回到事故前 1 秒
+      </text>
+    </g>
+  </g>
+
+</svg>

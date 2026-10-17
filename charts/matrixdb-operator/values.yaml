@@ -1,0 +1,28 @@
+# Default values for matrixdb-operator.
+replicaCount: 1
+
+image:
+  repository: matrixdb-operator
+  pullPolicy: IfNotPresent
+  tag: "v3.0.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: "matrixdb-operator-controller-manager"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

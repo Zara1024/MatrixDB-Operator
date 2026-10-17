@@ -1,0 +1,14 @@
+﻿apiVersion: apps.matrixdb.io/v1alpha1
+kind: MatrixDBCluster
+metadata:
+  name: matrixdb-with-proxysql
+  namespace: default
+spec:
+  replicas: 3
+  image: mysql:8.0.36
+  storage:
+    size: 20Gi
+  proxy:
+    enabled: true
+    replicas: 2
+    image: proxysql/proxysql:2.5.5

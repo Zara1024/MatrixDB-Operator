@@ -1,0 +1,25 @@
+# Binaries for programs and plugins
+bin/
+cover.out
+cover.html
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+*.test
+
+# Archives & Temporary files
+*.tar.gz
+*.tar
+*.zip
+*.log
+/tmp/
+scratch/

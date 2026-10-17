@@ -1,0 +1,28 @@
+﻿apiVersion: apps.matrixdb.io/v1alpha1
+kind: MatrixDBCluster
+metadata:
+  name: matrixdb-prod
+  namespace: default
+spec:
+  replicas: 3
+  image: mysql:8.0.36
+  semiSyncTimeoutMS: 10000
+  storage:
+    size: 20Gi
+    storageClassName: local-path
+  binlogArchive:
+    enabled: true
+    archiveIntervalSeconds: 5
+    s3Storage:
+      s3Endpoint: http://minio.default.svc:9000
+      s3Bucket: matrixdb-backups
+      s3AccessKey: minioadmin
+      s3SecretKey: minioadmin
+  metrics:
+    enabled: true
+  doctor:
+    enabled: true
+    killLongMDLSeconds: 5
+  mysqlConfig:
+    max_connections: 2000
+    innodb_buffer_pool_size: 1G

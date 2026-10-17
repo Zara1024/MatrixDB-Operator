@@ -1,0 +1,197 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: matrixdb-operator-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  - services
+  - persistentvolumeclaims
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - statefulsets
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbclusters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbclusters/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbclusters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbbackups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbbackups/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbbackups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbrestores
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbrestores/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbrestores/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbscheduledbackups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbscheduledbackups/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbscheduledbackups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbschemamigrations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbschemamigrations/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - apps.matrixdb.io
+  resources:
+  - matrixdbschemamigrations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+
+

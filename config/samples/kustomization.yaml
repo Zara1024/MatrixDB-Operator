@@ -1,0 +1,4 @@
+resources:
+- apps_v1alpha1_matrixdbcluster.yaml
+- production_cluster.yaml
+

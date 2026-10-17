@@ -1,0 +1,10 @@
+﻿apiVersion: apps.matrixdb.io/v1alpha1
+kind: MatrixDBRestore
+metadata:
+  name: restore-pitr-sample
+  namespace: default
+spec:
+  clusterName: matrixdb-prod
+  backupName: backup-snapshot-sample
+  pitr:
+    targetTime: 2026-10-17T22:00:00Z

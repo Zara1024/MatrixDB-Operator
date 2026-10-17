@@ -1,0 +1,8 @@
+﻿apiVersion: apps.matrixdb.io/v1alpha1
+kind: MatrixDBRestore
+metadata:
+  name: restore-full-sample
+  namespace: default
+spec:
+  clusterName: matrixdb-prod
+  backupName: backup-snapshot-sample

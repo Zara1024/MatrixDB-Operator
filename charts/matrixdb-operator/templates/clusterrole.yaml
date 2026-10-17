@@ -1,0 +1,38 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Release.Name }}-matrixdb-operator-role
+rules:
+- apiGroups: [""]
+  resources: ["configmaps", "secrets", "services", "persistentvolumeclaims"]
+  verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create", "patch"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+- apiGroups: ["apps"]
+  resources: ["statefulsets", "deployments"]
+  verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+- apiGroups: ["apps.matrixdb.io"]
+  resources:
+  - matrixdbclusters
+  - matrixdbclusters/status
+  - matrixdbclusters/finalizers
+  - matrixdbbackups
+  - matrixdbbackups/status
+  - matrixdbbackups/finalizers
+  - matrixdbrestores
+  - matrixdbrestores/status
+  - matrixdbrestores/finalizers
+  - matrixdbscheduledbackups
+  - matrixdbscheduledbackups/status
+  - matrixdbscheduledbackups/finalizers
+  - matrixdbschemamigrations
+  - matrixdbschemamigrations/status
+  - matrixdbschemamigrations/finalizers
+  verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+- apiGroups: ["policy"]
+  resources: ["poddisruptionbudgets"]
+  verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]

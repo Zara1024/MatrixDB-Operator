@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matrixdb-grafana-dashboard
+  namespace: {{ .Release.Namespace }}
+  labels:
+    grafana_dashboard: "1"
+    app.kubernetes.io/name: matrixdb-operator
+data:
+  matrixdb-overview.json: |-
+    {
+      "annotations": { "list": [] },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": null,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "title": "MatrixDB MySQL Cluster Uptime",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+          "targets": [
+            { "expr": "mysql_global_status_uptime", "legendFormat": "{{ `{{` }}instance{{ `}}` }}" }
+          ]
+        },
+        {
+          "title": "Semi-Sync Master Status",
+          "type": "stat",
+          "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+          "targets": [
+            { "expr": "mysql_global_status_rpl_semi_sync_master_status", "legendFormat": "{{ `{{` }}instance{{ `}}` }}" }
+          ]
+        },
+        {
+          "title": "Connected Semi-Sync Clients",
+          "type": "gauge",
+          "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+          "targets": [
+            { "expr": "mysql_global_status_rpl_semi_sync_master_clients", "legendFormat": "{{ `{{` }}instance{{ `}}` }}" }
+          ]
+        },
+        {
+          "title": "Seconds Behind Master (Replication Lag)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+          "targets": [
+            { "expr": "mysql_slave_status_seconds_behind_master", "legendFormat": "{{ `{{` }}instance{{ `}}` }}" }
+          ]
+        },
+        {
+          "title": "Queries Per Second (QPS)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+          "targets": [
+            { "expr": "rate(mysql_global_status_queries[1m])", "legendFormat": "{{ `{{` }}instance{{ `}}` }}" }
+          ]
+        }
+      ],
+      "refresh": "5s",
+      "schemaVersion": 38,
+      "style": "dark",
+      "tags": ["matrixdb", "mysql", "ha"],
+      "time": { "from": "now-15m", "to": "now" },
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "MatrixDB Cluster Overview",
+      "version": 1
+    }

@@ -1,0 +1,27 @@
+apiVersion: apps.matrixdb.io/v1alpha1
+kind: MatrixDBCluster
+metadata:
+  name: matrixdb-sample
+spec:
+  # Desired number of nodes (1 Primary + 2 Replicas)
+  replicas: 3
+  # High performance MySQL 8.0 image
+  image: mysql:8.0.36
+  # Storage configuration
+  storage:
+    storageClassName: "local-path"
+    size: 10Gi
+  # Resource requests and limits
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "2"
+      memory: "4Gi"
+  # Custom production tuning
+  mysqlConfig:
+    innodb_buffer_pool_size: "256M"
+    max_connections: "500"
+    slow_query_log: "ON"
+    long_query_time: "2"

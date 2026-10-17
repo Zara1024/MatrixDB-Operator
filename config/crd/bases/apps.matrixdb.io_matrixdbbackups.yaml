@@ -1,0 +1,102 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.14.0
+  name: matrixdbbackups.apps.matrixdb.io
+spec:
+  group: apps.matrixdb.io
+  names:
+    kind: MatrixDBBackup
+    listKind: MatrixDBBackupList
+    plural: matrixdbbackups
+    shortNames:
+    - mdbbk
+    singular: matrixdbbackup
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.clusterName
+      name: Cluster
+      type: string
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    - jsonPath: .status.backupSize
+      name: Size
+      type: string
+    - jsonPath: .status.executedGtid
+      name: GTID
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: MatrixDBBackup is the Schema for the matrixdbbackups API.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation of an object.'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this object represents.'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: MatrixDBBackupSpec defines the desired state of MatrixDBBackup.
+            properties:
+              clusterName:
+                description: ClusterName specifies the MatrixDBCluster to back up.
+                type: string
+              storage:
+                description: Storage specifies the storage location for backup archives.
+                properties:
+                  localPath:
+                    description: LocalPath defines the host/container path to save the backup snapshot.
+                    type: string
+                  s3Bucket:
+                    description: S3Bucket optional S3 bucket name.
+                    type: string
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              backupType:
+                default: Logical
+                description: BackupType specifies whether the backup is Logical (mysqldump) or Physical (xtrabackup).
+                type: string
+            required:
+            - clusterName
+            type: object
+          status:
+            description: MatrixDBBackupStatus defines the observed state of MatrixDBBackup.
+            properties:
+              backupPath:
+                type: string
+              backupSize:
+                type: string
+              binlogFile:
+                type: string
+              binlogPos:
+                type: integer
+              completionTime:
+                format: date-time
+                type: string
+              executedGtid:
+                type: string
+              message:
+                type: string
+              phase:
+                type: string
+              sourcePod:
+                type: string
+              startTime:
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

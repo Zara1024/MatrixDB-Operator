@@ -1,0 +1,255 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+  name: matrixdbclusters.apps.matrixdb.io
+spec:
+  group: apps.matrixdb.io
+  names:
+    kind: MatrixDBCluster
+    listKind: MatrixDBClusterList
+    plural: matrixdbclusters
+    shortNames:
+    - mdb
+    singular: matrixdbcluster
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    - jsonPath: .status.primary
+      name: Primary
+      type: string
+    - jsonPath: .spec.replicas
+      name: Replicas
+      type: integer
+    - jsonPath: .status.readyReplicas
+      name: Ready
+      type: integer
+    - jsonPath: .status.syncedReplicas
+      name: Synced
+      type: integer
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: MatrixDBCluster is the Schema for the matrixdbclusters API.
+        properties:
+          apiVersion:
+            description: APIVersion defines the versioned schema of this representation of an object.
+            type: string
+          kind:
+            description: Kind is a string value representing the REST resource this object represents.
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: MatrixDBClusterSpec defines the desired state of MatrixDBCluster.
+            properties:
+              affinity:
+                description: Affinity allows configuring node or pod affinity for the StatefulSet.
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              image:
+                default: mysql:8.0.36
+                description: Image is the MySQL Docker image.
+                type: string
+              analyticalReplicas:
+                description: AnalyticalReplicas is the number of dedicated read-only analytical replicas.
+                format: int32
+                type: integer
+              doctor:
+                description: Doctor defines autonomous DBA self-healing capabilities.
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              cloneFromCluster:
+                description: CloneFromCluster names an existing MatrixDBCluster to clone from.
+                type: string
+              isReplicaCluster:
+                description: IsReplicaCluster specifies if this cluster is a standby replica cluster.
+                type: boolean
+              primaryCluster:
+                description: PrimaryCluster specifies the upstream primary cluster endpoint.
+                type: string
+              binlogArchive:
+                description: BinlogArchive defines settings for real-time continuous binlog streaming to S3 for PITR.
+                properties:
+                  enabled:
+                    type: boolean
+                  archiveIntervalSeconds:
+                    type: integer
+                  s3Storage:
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                type: object
+              topologySpreadConstraints:
+                description: TopologySpreadConstraints specifies topology spread rules for distributing MySQL Pods across AZs.
+                items:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                type: array
+              metrics:
+                description: Metrics defines Prometheus exporter configuration.
+                properties:
+                  enabled:
+                    type: boolean
+                  image:
+                    type: string
+                  port:
+                    type: integer
+                  resources:
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                type: object
+              proxy:
+                description: Proxy defines ProxySQL query routing and connection pool settings.
+                properties:
+                  enabled:
+                    type: boolean
+                  image:
+                    type: string
+                  replicas:
+                    default: 2
+                    format: int32
+                    type: integer
+                type: object
+              mysqlConfig:
+                additionalProperties:
+                  type: string
+                description: MysqlConfig contains custom my.cnf configuration directives to overlay.
+                type: object
+              nodeSelector:
+                additionalProperties:
+                  type: string
+                description: NodeSelector is a selector which must be true for the pod to fit on a node.
+                type: object
+              replicas:
+                default: 3
+                description: Replicas is the desired number of MySQL instances.
+                format: int32
+                minimum: 1
+                type: integer
+              resources:
+                description: Resources describes compute resource requirements.
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              secretName:
+                description: SecretName points to a Secret containing root-password and replica-password.
+                type: string
+              semiSyncTimeoutMs:
+                default: 1000000000
+                description: SemiSyncTimeoutMS is the semi-synchronous replication timeout in milliseconds.
+                format: int64
+                type: integer
+              serverIdOffset:
+                default: 100
+                description: ServerIDOffset is an offset added to the Pod ordinal to generate server-id.
+                type: integer
+              storage:
+                description: Storage defines persistent storage requirements.
+                properties:
+                  size:
+                    description: Size is the requested persistent volume size.
+                    type: string
+                  storageClassName:
+                    description: StorageClassName is the storage class to use.
+                    type: string
+                required:
+                - size
+                type: object
+              tolerations:
+                description: Tolerations allows configuring pod tolerations.
+                items:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                type: array
+            required:
+            - storage
+            type: object
+          status:
+            description: MatrixDBClusterStatus defines the observed state of MatrixDBCluster.
+            properties:
+              conditions:
+                description: Conditions represents the latest available observations.
+                items:
+                  description: Condition contains details for one aspect of the current state.
+                  properties:
+                    lastTransitionTime:
+                      format: date-time
+                      type: string
+                    message:
+                      type: string
+                    reason:
+                      type: string
+                    status:
+                      type: string
+                    type:
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              nodes:
+                description: Nodes contains detailed per-node replication diagnostics.
+                items:
+                  properties:
+                    executedGtid:
+                      type: string
+                    ioRunning:
+                      type: boolean
+                    message:
+                      type: string
+                    podName:
+                      type: string
+                    readOnly:
+                      type: boolean
+                    ready:
+                      type: boolean
+                    retrievedGtid:
+                      type: string
+                    role:
+                      type: string
+                    errant:
+                      type: boolean
+                    errantGtid:
+                      type: string
+                    sqlRunning:
+                      type: boolean
+                  required:
+                  - podName
+                  - ready
+                  - role
+                  type: object
+                type: array
+              errantReplicas:
+                format: int32
+                type: integer
+              phase:
+                description: Phase is the current operational phase of the cluster.
+                type: string
+              primary:
+                description: Primary is the Pod name of the current primary node.
+                type: string
+              readyReplicas:
+                description: ReadyReplicas is the number of Pods currently in Ready state.
+                format: int32
+                type: integer
+              syncedReplicas:
+                description: SyncedReplicas is the number of replicas actively synchronizing.
+                format: int32
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

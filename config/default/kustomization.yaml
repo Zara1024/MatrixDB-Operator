@@ -1,0 +1,17 @@
+# Adds namespace to all resources.
+namespace: matrixdb-operator-system
+
+# Value of this field is prepended to the
+# names of all resources, e.g. a deployment named
+# "wordpress" becomes "alpn-wordpress".
+namePrefix: matrixdb-operator-
+
+# Labels to add to all resources and selectors.
+commonLabels:
+  app.kubernetes.io/name: matrixdb-operator
+  app.kubernetes.io/managed-by: kustomize
+
+bases:
+- ../crd
+- ../rbac
+- ../manager

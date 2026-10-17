@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: Test & Lint
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.22'
+        cache: true
+
+    - name: Run Go fmt
+      run: |
+        diff -u <(echo -n) <(gofmt -d -s .)
+
+    - name: Run Go Vet
+      run: go vet ./...
+
+    - name: Run Tests
+      run: go test -v -race ./internal/mysql/...
+
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: actions/docker-setup-buildx-action@v3
+
+    - name: Build Operator Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: false
+        tags: matrixdb-operator:latest

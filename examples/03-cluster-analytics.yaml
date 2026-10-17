@@ -1,0 +1,11 @@
+﻿apiVersion: apps.matrixdb.io/v1alpha1
+kind: MatrixDBCluster
+metadata:
+  name: matrixdb-analytics
+  namespace: default
+spec:
+  replicas: 4
+  analyticalReplicas: 1
+  image: mysql:8.0.36
+  storage:
+    size: 50Gi

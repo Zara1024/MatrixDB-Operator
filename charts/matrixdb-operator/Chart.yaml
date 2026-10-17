@@ -1,0 +1,15 @@
+apiVersion: v2
+name: matrixdb-operator
+description: Production Platform-Grade MySQL Operator for Kubernetes (MatrixDB-Operator v3.0.0)
+type: application
+version: 3.0.0
+appVersion: "3.0.0"
+maintainers:
+  - name: MatrixDB Team
+    email: support@matrixdb.io
+keywords:
+  - mysql
+  - database
+  - high-availability
+  - operator
+  - cloud-native

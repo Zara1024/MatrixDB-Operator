@@ -1,0 +1,48 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: matrixdb-alerts
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: matrixdb-operator
+    prometheus: k8s
+    role: alert-rules
+spec:
+  groups:
+  - name: matrixdb.rules
+    rules:
+    - alert: MySQLDown
+      expr: mysql_up == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "MySQL instance {{ `{{` }} $labels.instance {{ `}}` }} is down"
+        description: "MySQL instance has been unreachable for more than 1 minute."
+
+    - alert: MySQLReplicationStopped
+      expr: mysql_slave_status_slave_io_running == 0 or mysql_slave_status_slave_sql_running == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "MySQL replication thread stopped on {{ `{{` }} $labels.instance {{ `}}` }}"
+        description: "Replication IO or SQL thread is not running on replica instance."
+
+    - alert: MySQLHighReplicationLag
+      expr: mysql_slave_status_seconds_behind_master > 30
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High replication lag on {{ `{{` }} $labels.instance {{ `}}` }}"
+        description: "Replication lag is exceeding 30 seconds."
+
+    - alert: MySQLSemiSyncDegraded
+      expr: mysql_global_status_rpl_semi_sync_master_status == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Lossless semi-sync degraded to asynchronous on {{ `{{` }} $labels.instance {{ `}}` }}"
+        description: "Primary semi-sync status is OFF, cluster might be exposed to RPO > 0."
